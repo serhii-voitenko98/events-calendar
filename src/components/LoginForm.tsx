@@ -11,13 +11,13 @@ export const LoginForm: FC = () => {
 
   const onFinish = ({username, password}: {username: string, password: string}) => {
     dispatch(AuthActionCreators.login(username, password));
-
   };
 
   return (
     <Form
       onFinish={(e) => onFinish(e)}
     >
+      {error && <div style={{color: 'red'}}>{error}</div>}
       <Form.Item
         label='Username'
         name='username'
