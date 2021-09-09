@@ -1,23 +1,25 @@
 import { Input, Form, Button } from 'antd';
 import React, { FC } from 'react';
-import { useDispatch } from 'react-redux';
+import { useActions } from '../hooks/useActions';
 import { useTypedSelector } from '../hooks/useTypedSelector';
-import { AuthActionCreators } from '../store/reducers/auth/actionCreators';
 import { formRules } from '../utils/formRules';
 
-export const LoginForm: FC = () => {
-  const dispatch = useDispatch();
-  const {error, isLoading} = useTypedSelector(state => state.authReducer);
+interface ILoginForm {
+  username: string;
+  password: string;
+}
 
-  const onFinish = ({username, password}: {username: string, password: string}) => {
-    dispatch(AuthActionCreators.login(username, password));
+export const LoginForm: FC = () => {
+  const { error, isLoading } = useTypedSelector(state => state.authReducer);
+  const { login } = useActions();
+
+  const submitForm = (formData: ILoginForm) => {
+    login(formData.username, formData.password);
   };
 
   return (
-    <Form
-      onFinish={(e) => onFinish(e)}
-    >
-      {error && <div style={{color: 'red'}}>{error}</div>}
+    <Form onFinish={e => submitForm(e)}>
+      {error && <div style={{ color: 'red' }}>{error}</div>}
       <Form.Item
         label='Username'
         name='username'
