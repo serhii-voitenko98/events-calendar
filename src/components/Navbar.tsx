@@ -3,24 +3,26 @@ import { Layout, Menu } from 'antd';
 import { useHistory } from 'react-router';
 import { RouteNames } from '../routes';
 import { useTypedSelector } from '../hooks/useTypedSelector';
+import { useActions } from '../hooks/useActions';
 
 export const Navbar: FC = () => {
   const router = useHistory();
-  const { isAuth } = useTypedSelector(state => state.authReducer);
+  const { isAuth, user } = useTypedSelector(state => state.authReducer);
+  const { logout } = useActions();
 
   return (
     <Layout.Header>
       {isAuth ? (
         <>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <div style={{ color: 'white' }}>{'Username'}</div>
+            <div style={{ color: 'white' }}>{user.username}</div>
             <Menu
               theme='dark'
               mode='horizontal'
               selectable={false}
               style={{ justifyContent: 'flex-end' }}
             >
-              <Menu.Item onClick={() => console.log('logout')} key={1}>
+              <Menu.Item onClick={() => logout()} key={1}>
                 Logout
               </Menu.Item>
             </Menu>
